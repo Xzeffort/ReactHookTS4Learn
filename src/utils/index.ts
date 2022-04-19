@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Interface } from "readline";
 
-export const isFalsy = (value: any) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 export const cleanObject = (object: any) => {
   const result = { ...object };
@@ -41,3 +42,18 @@ export const useDebounce = <T>(value: T, delay?: number): T => {
 //     }, delay);
 //   };
 // };
+
+export const useArray = <T>(data: T[]) => {
+  const [list, setList] = useState(data);
+  return {
+    value: list,
+    setList,
+    add: (item: T) => setList([...list, item]),
+    clear: () => setList([]),
+    removeIndex: (index: number) => {
+      const copy = [...list];
+      copy.splice(index, 1);
+      setList(copy);
+    },
+  };
+};
