@@ -1,5 +1,5 @@
 import React, { FormEvent } from "react";
-import { useAuth } from "../../context/auth-context";
+import { useAuth } from "../context/auth-context";
 
 export const LoginScreen: React.FC = () => {
   const { login, user } = useAuth();

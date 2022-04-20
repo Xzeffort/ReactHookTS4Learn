@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Interface } from "readline";
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
