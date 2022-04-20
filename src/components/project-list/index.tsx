@@ -1,12 +1,9 @@
-import qs from "qs";
 import React from "react";
 import { useEffect, useState } from "react";
 import { cleanObject, useDebounce, useMount } from "../../utils";
 import { useHttp } from "../../utils/http";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export interface Param {
   name: string;
@@ -42,7 +39,7 @@ export const ProjectListPage: React.FC = () => {
   const debouncedParam = useDebounce(param, 1000);
 
   useEffect(() => {
-    client("projects", cleanObject(debouncedParam)).then(setList);
+    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
   }, [debouncedParam]);
 
   useMount(() => {

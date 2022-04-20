@@ -1,4 +1,5 @@
 import React from "react";
+import { Table } from "antd";
 import { Project, User } from ".";
 
 interface ProjectList {
@@ -8,26 +9,26 @@ interface ProjectList {
 
 export const List: React.FC<ProjectList> = ({ users, list }) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <td>名称</td>
-        </tr>
-        <tr>
-          <td>负责人</td>
-        </tr>
-      </thead>
-      <tbody>
-        {list.map((project) => (
-          <tr key={project.personId + project.name}>
-            <td>{project.name}</td>
-            <td>
-              {users.find((user) => user.id === project.personId)?.name ||
-                "未知"}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table
+      pagination={false}
+      columns={[
+        {
+          title: "名称",
+          dataIndex: "name",
+        },
+        {
+          title: "负责人",
+          render(value, project) {
+            return (
+              <span>
+                {users.find((user) => user.id === project.personId)?.name ||
+                  "未知"}
+              </span>
+            );
+          },
+        },
+      ]}
+      dataSource={list}
+    ></Table>
   );
 };
