@@ -5,6 +5,7 @@ import { cleanObject, useDebounce, useMount } from "../../utils";
 import { useHttp } from "../../utils/http";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
+import { Typography } from "antd";
 
 export interface Param {
   name: unknown;
@@ -39,12 +40,23 @@ export const ProjectListPage: React.FC = () => {
 
   const [list, setList] = useState<Project[]>([]);
 
+  const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState<null | Error>(null);
+
   const client = useHttp();
 
   const debouncedParam = useDebounce(param, 1000);
 
   useEffect(() => {
-    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
+    setLoading(true);
+    client("projects", { data: cleanObject(debouncedParam) })
+      .then(setList)
+      .catch((error) => {
+        setError(error);
+        setList([]);
+      })
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParam]);
 
@@ -56,7 +68,10 @@ export const ProjectListPage: React.FC = () => {
     <Container>
       <h1>项目列表</h1>
       <SearchPanel param={param} setParam={setParam} users={users} />
-      <List list={list} users={users} />
+      {error ? (
+        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+      ) : null}
+      <List loading={loading} dataSource={list} users={users} />
     </Container>
   );
 };
