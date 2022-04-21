@@ -14,7 +14,6 @@
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
-    "antd": "^4.19.5",
     "craco-less": "^2.0.0",
     "dayjs": "^1.11.1",
     "imooc-jira-tool": "^1.0.3",

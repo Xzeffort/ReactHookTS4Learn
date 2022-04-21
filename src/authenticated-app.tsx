@@ -3,8 +3,9 @@ import React from "react";
 import { ProjectListPage } from "./components/project-list";
 import { useAuth } from "./context/auth-context";
 import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
-import { Dropdown, Menu, Button } from "antd";
+import { Menu, Dropdown, Button, Space } from "antd";
 import { Row } from "./components/lib";
+
 export const AuthenticatedApp: React.FC = () => {
   const { logout, user } = useAuth();
 
@@ -17,9 +18,22 @@ export const AuthenticatedApp: React.FC = () => {
           <h3>用户</h3>
         </HeaderLeft>
         <HeaderRight>
-          <Button onClick={(e) => e.preventDefault()} type="link">
-            Hi, {user?.name}
-          </Button>
+          <Space>
+            <Dropdown.Button
+              overlay={
+                <Menu>
+                  <Menu.Item key={"logout"}>
+                    <Button onClick={logout} type={"link"}>
+                      登出
+                    </Button>
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              {" "}
+              Hi, {user?.name}
+            </Dropdown.Button>
+          </Space>
         </HeaderRight>
       </Header>
       <Main>

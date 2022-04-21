@@ -11,6 +11,7 @@ interface ProjectList {
 export const List: React.FC<ProjectList> = ({ users, list }) => {
   return (
     <Table
+      rowKey="id"
       pagination={false}
       columns={[
         {
