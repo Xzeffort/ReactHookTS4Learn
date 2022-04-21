@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { useEffect, useState } from "react";
-import { cleanObject, useDebounce, useMount } from "../../utils";
-import { useHttp } from "../../utils/http";
+import { useState } from "react";
+import { useDebounce } from "../../utils";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { Typography } from "antd";
+import { useProjects } from "../../utils/project";
+import { useUsers } from "../../utils/user";
 
 export interface Param {
   name: unknown;
@@ -36,42 +37,20 @@ export const ProjectListPage: React.FC = () => {
     personId: "",
   });
 
-  const [users, setUsers] = useState<User[]>([]);
-
-  const [list, setList] = useState<Project[]>([]);
-
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState<null | Error>(null);
-
-  const client = useHttp();
-
   const debouncedParam = useDebounce(param, 1000);
 
-  useEffect(() => {
-    setLoading(true);
-    client("projects", { data: cleanObject(debouncedParam) })
-      .then(setList)
-      .catch((error) => {
-        setError(error);
-        setList([]);
-      })
-      .finally(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedParam]);
+  const { isLoading, error, data: list } = useProjects(debouncedParam);
 
-  useMount(() => {
-    client("users").then(setUsers);
-  });
+  const { data: users } = useUsers();
 
   return (
     <Container>
       <h1>项目列表</h1>
-      <SearchPanel param={param} setParam={setParam} users={users} />
+      <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List loading={loading} dataSource={list} users={users} />
+      <List loading={isLoading} dataSource={list || []} users={users || []} />
     </Container>
   );
 };
