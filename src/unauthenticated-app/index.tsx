@@ -15,6 +15,11 @@ export const UnauthenticatedApp: React.FC = () => {
     <Container>
       <Header />
       <Background />
+      <Button
+        onClick={() => {
+          throw new Error("click to error");
+        }}
+      ></Button>
       <ShadowCard>
         <Title> {isRegister ? "请注册" : "请登录"} </Title>
         {error ? (

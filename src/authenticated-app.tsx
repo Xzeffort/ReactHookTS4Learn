@@ -8,7 +8,6 @@ import { Row } from "./components/lib";
 
 export const AuthenticatedApp: React.FC = () => {
   const { logout, user } = useAuth();
-
   return (
     <Container>
       <Header between={true}>
