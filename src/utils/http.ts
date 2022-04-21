@@ -5,7 +5,7 @@ import * as auth from "../auth-provider";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 interface Config extends RequestInit {
-  data?: string;
+  data?: object;
   token?: string;
 }
 

@@ -6,17 +6,21 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 
 export interface Param {
-  name: string;
-  personId: string;
+  name: unknown;
+  personId: unknown;
 }
 
 export interface Project {
+  id: string;
   name: string;
-  personId: number;
+  personId: string;
+  pin: boolean;
+  organization: string;
+  created: number;
 }
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
   title: string;
@@ -25,7 +29,7 @@ export interface User {
 }
 
 export const ProjectListPage: React.FC = () => {
-  const [param, setParam] = useState<Param>({
+  const [param, setParam] = useState({
     name: "",
     personId: "",
   });
@@ -40,6 +44,7 @@ export const ProjectListPage: React.FC = () => {
 
   useEffect(() => {
     client("projects", { data: cleanObject(debouncedParam) }).then(setList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParam]);
 
   useMount(() => {
