@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, Select } from "antd";
-import { Param, User } from ".";
+import { User } from ".";
 
 interface Props {
   users: User[];

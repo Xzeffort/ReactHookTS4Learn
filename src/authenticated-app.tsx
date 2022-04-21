@@ -22,7 +22,6 @@ export const AuthenticatedApp: React.FC = () => {
           </Button>
         </HeaderRight>
       </Header>
-      <Title>项目列表</Title>
       <Main>
         <ProjectListPage />
       </Main>
@@ -43,7 +42,3 @@ const HeaderLeft = styled(Row)``;
 
 const HeaderRight = styled.div``;
 const Main = styled.main``;
-
-const Title = styled.h2`
-  padding-top: 2rem;
-`;
