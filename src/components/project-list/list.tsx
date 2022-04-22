@@ -4,6 +4,7 @@ import { Project, User } from "./index";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
 import { useDocumentTitle } from "../../utils";
+import { Link } from "react-router-dom";
 
 interface ProjectList extends TableProps<Project> {
   users: User[];
@@ -23,6 +24,9 @@ export const List: React.FC<ProjectList> = ({
           title: "名称",
           key: "name",
           dataIndex: "name",
+          render(value, project) {
+            return <Link to={String(project.id)}>{project.name}</Link>;
+          },
         },
         {
           title: "负责人",

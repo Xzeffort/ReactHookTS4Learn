@@ -5,40 +5,56 @@ import { useAuth } from "./context/auth-context";
 import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
 import { Menu, Dropdown, Button, Space } from "antd";
 import { Row } from "./components/lib";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { ProjectScreen } from "./components/project";
 
 export const AuthenticatedApp: React.FC = () => {
-  const { logout, user } = useAuth();
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-          <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
-          <h3>项目</h3>
-          <h3>用户</h3>
-        </HeaderLeft>
-        <HeaderRight>
-          <Space>
-            <Dropdown.Button
-              overlay={
-                <Menu>
-                  <Menu.Item key={"logout"}>
-                    <Button onClick={logout} type={"link"}>
-                      登出
-                    </Button>
-                  </Menu.Item>
-                </Menu>
-              }
-            >
-              {" "}
-              Hi, {user?.name}
-            </Dropdown.Button>
-          </Space>
-        </HeaderRight>
-      </Header>
+      <PageHeader />
       <Main>
-        <ProjectListPage />
+        <BrowserRouter>
+          <Routes>
+            <Route path={"/projects"} element={<ProjectListPage />} />
+            <Route
+              path={"/projects/:projectId/*"}
+              element={<ProjectScreen />}
+            />
+          </Routes>
+        </BrowserRouter>
       </Main>
     </Container>
+  );
+};
+
+const PageHeader: React.FC = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Header between={true}>
+      <HeaderLeft gap={true}>
+        <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+        <h3>项目</h3>
+        <h3>用户</h3>
+      </HeaderLeft>
+      <HeaderRight>
+        <Space>
+          <Dropdown.Button
+            overlay={
+              <Menu>
+                <Menu.Item key={"logout"}>
+                  <Button onClick={logout} type={"link"}>
+                    登出
+                  </Button>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            {" "}
+            Hi, {user?.name}
+          </Dropdown.Button>
+        </Space>
+      </HeaderRight>
+    </Header>
   );
 };
 
