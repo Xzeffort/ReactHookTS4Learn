@@ -7,6 +7,7 @@ import { SearchPanel } from "./search-panel";
 import { Typography } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
+import { useUrlQueryParam } from "../../utils/url";
 
 export interface Param {
   name: unknown;
@@ -31,11 +32,8 @@ export interface User {
   token: string;
 }
 
-export const ProjectListPage: React.FC = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+export const ProjectListPage = () => {
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
 
   const debouncedParam = useDebounce(param, 1000);
 
@@ -54,6 +52,8 @@ export const ProjectListPage: React.FC = () => {
     </Container>
   );
 };
+
+ProjectListPage.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 3.2rem;

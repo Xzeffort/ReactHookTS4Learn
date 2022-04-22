@@ -15,6 +15,7 @@ export const List: React.FC<ProjectList> = ({
   ...props
 }: ProjectList) => {
   useDocumentTitle("项目列表", false);
+
   return (
     <Table
       rowKey="id"
