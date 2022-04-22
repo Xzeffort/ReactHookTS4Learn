@@ -3,6 +3,7 @@ import { Table } from "antd";
 import { Project, User } from "./index";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
+import { useDocumentTitle } from "../../utils";
 
 interface ProjectList extends TableProps<Project> {
   users: User[];
@@ -12,6 +13,7 @@ export const List: React.FC<ProjectList> = ({
   users,
   ...props
 }: ProjectList) => {
+  useDocumentTitle("项目列表", false);
   return (
     <Table
       rowKey="id"
