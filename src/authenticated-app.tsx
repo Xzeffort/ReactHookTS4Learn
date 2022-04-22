@@ -5,8 +5,9 @@ import { useAuth } from "./context/auth-context";
 import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
 import { Menu, Dropdown, Button, Space } from "antd";
 import { Row } from "./components/lib";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import { ProjectScreen } from "./components/project";
+import { resetRoute } from "./utils";
 
 export const AuthenticatedApp: React.FC = () => {
   return (
@@ -20,6 +21,10 @@ export const AuthenticatedApp: React.FC = () => {
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
+            <Route
+              path="*"
+              element={<Navigate to="/projects" replace={true} />}
+            />
           </Routes>
         </BrowserRouter>
       </Main>
@@ -32,7 +37,9 @@ const PageHeader: React.FC = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+        <Button type={"link"} onClick={resetRoute}>
+          <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+        </Button>
         <h3>项目</h3>
         <h3>用户</h3>
       </HeaderLeft>
