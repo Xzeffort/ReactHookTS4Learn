@@ -3,24 +3,38 @@ import { Table } from "antd";
 import { Project, User } from "./index";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
-import { useDocumentTitle } from "../../utils";
 import { Link } from "react-router-dom";
+import { Pin } from "../pin";
+import { useEditProject } from "../../utils/project";
 
 interface ProjectList extends TableProps<Project> {
   users: User[];
+  refresh?: () => void;
 }
 
 export const List: React.FC<ProjectList> = ({
   users,
   ...props
 }: ProjectList) => {
-  useDocumentTitle("项目列表", false);
-
+  const { mutate } = useEditProject();
+  const update = (id: number) => (pin: boolean) =>
+    mutate({ id: id, pin: pin }).then(props.refresh);
   return (
     <Table
       rowKey="id"
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true}></Pin>,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onCheckedChange={update(project.id)}
+              ></Pin>
+            );
+          },
+        },
         {
           title: "名称",
           key: "name",

@@ -24,7 +24,9 @@ export const IdSelect = (props: IdSelectProps) => {
         <Select.Option value={0}>{defaultOptionName}</Select.Option>
       ) : null}
       {options?.map((option) => (
-        <Select.Option value={option.id}>{option.name}</Select.Option>
+        <Select.Option value={option.id} key={option.id}>
+          {option.name}
+        </Select.Option>
       ))}
     </Select>
   );

@@ -1,4 +1,3 @@
-import { Param } from "./index";
 import { useMemo } from "react";
 import { useUrlQueryParam } from "../../utils/url";
 

@@ -14,7 +14,7 @@ export interface Param {
 }
 
 export interface Project {
-  id: string;
+  id: number;
   name: string;
   personId: number;
   pin: boolean;
@@ -38,7 +38,7 @@ export const ProjectListPage = () => {
 
   const debouncedParam = useDebounce(param, 1000);
 
-  const { isLoading, error, data: list } = useProjects(debouncedParam);
+  const { isLoading, error, data: list, retry } = useProjects(debouncedParam);
 
   const { data: users } = useUsers();
 
@@ -49,7 +49,12 @@ export const ProjectListPage = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <List
+        refresh={retry}
+        loading={isLoading}
+        dataSource={list || []}
+        users={users || []}
+      />
     </Container>
   );
 };
