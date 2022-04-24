@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { useState } from "react";
-import { useDebounce } from "../../utils";
+import { useDebounce, useDocumentTitle } from "../../utils";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { Typography } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
-import { useUrlQueryParam } from "../../utils/url";
+import { useProjectsSearchParams } from "./util";
 
 export interface Param {
   name: unknown;
@@ -17,14 +16,14 @@ export interface Param {
 export interface Project {
   id: string;
   name: string;
-  personId: string;
+  personId: number;
   pin: boolean;
   organization: string;
   created: number;
 }
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   title: string;
@@ -33,7 +32,9 @@ export interface User {
 }
 
 export const ProjectListPage = () => {
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  useDocumentTitle("项目列表", false);
+
+  const [param, setParam] = useProjectsSearchParams();
 
   const debouncedParam = useDebounce(param, 1000);
 

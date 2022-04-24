@@ -1,13 +1,11 @@
 import React from "react";
 import { Form, Input, Select } from "antd";
-import { User } from ".";
+import { Project, User } from ".";
+import { UserSelect } from "../user-select";
 
 interface Props {
   users: User[];
-  param: {
-    name: string;
-    personId: string;
-  };
+  param: Partial<Pick<Project, "name" | "personId">>;
   setParam: (param: Props["param"]) => void;
 }
 
@@ -28,7 +26,8 @@ export const SearchPanel: React.FC<Props> = ({ users, param, setParam }) => {
         />
       </Form.Item>
       <Form.Item>
-        <Select
+        <UserSelect
+          defaultOptionName={"负责人"}
           value={param.personId}
           onChange={(value) => {
             setParam({
@@ -36,14 +35,7 @@ export const SearchPanel: React.FC<Props> = ({ users, param, setParam }) => {
               personId: value,
             });
           }}
-        >
-          <Select.Option value={""}>负责人</Select.Option>
-          {users.map((user) => (
-            <Select.Option key={user.id} value={String(user.id)}>
-              {user.name}
-            </Select.Option>
-          ))}
-        </Select>
+        />
       </Form.Item>
     </Form>
   );
