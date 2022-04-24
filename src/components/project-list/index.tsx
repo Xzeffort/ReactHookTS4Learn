@@ -2,11 +2,12 @@ import styled from "@emotion/styled";
 import React from "react";
 import { useDebounce, useDocumentTitle } from "../../utils";
 import { List } from "./list";
-import { SearchPanel } from "./search-panel";
-import { Typography } from "antd";
+import { Typography, Button } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { useProjectsSearchParams } from "./util";
+import { SearchPanel } from "./search-panel";
+import { Row } from "../lib";
 
 export interface Param {
   name: unknown;
@@ -31,7 +32,9 @@ export interface User {
   token: string;
 }
 
-export const ProjectListPage = () => {
+export const ProjectListPage = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectsSearchParams();
@@ -44,7 +47,12 @@ export const ProjectListPage = () => {
 
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        <Button onClick={() => props.setProjectModalOpen(true)}>
+          创建项目
+        </Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
@@ -54,6 +62,7 @@ export const ProjectListPage = () => {
         loading={isLoading}
         dataSource={list || []}
         users={users || []}
+        setProjectModalOpen={props.setProjectModalOpen}
       />
     </Container>
   );

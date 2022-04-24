@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography, Spin } from "antd";
+import { Typography, Spin, Button } from "antd";
 import { DevTools } from "jira-dev-tool";
 
 export const Row = styled.div<{
@@ -52,3 +52,7 @@ export const ErrorBox = ({ error }: { error: unknown }) => {
   }
   return null;
 };
+
+export const ButttonNoPadding = styled(Button)`
+  padding: 0;
+`;

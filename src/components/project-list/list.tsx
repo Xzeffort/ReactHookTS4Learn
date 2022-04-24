@@ -1,15 +1,17 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Dropdown, Menu, Space } from "antd";
 import { Project, User } from "./index";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { Pin } from "../pin";
 import { useEditProject } from "../../utils/project";
+import { ButttonNoPadding } from "../lib";
 
 interface ProjectList extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
+  setProjectModalOpen: (isOpen: boolean) => void;
 }
 
 export const List: React.FC<ProjectList> = ({
@@ -65,6 +67,30 @@ export const List: React.FC<ProjectList> = ({
                   ? dayjs(project.created).format("YYYY-MM-DD")
                   : "无"}
               </span>
+            );
+          },
+        },
+        {
+          render(value, project) {
+            return (
+              <Space>
+                <Dropdown.Button
+                  overlay={
+                    <Menu>
+                      <Menu.Item key={"edit"}>
+                        <ButttonNoPadding
+                          onClick={() => {
+                            props.setProjectModalOpen(true);
+                          }}
+                          type={"link"}
+                        >
+                          编辑
+                        </ButttonNoPadding>
+                      </Menu.Item>
+                    </Menu>
+                  }
+                ></Dropdown.Button>
+              </Space>
             );
           },
         },
