@@ -6,12 +6,11 @@ import { TableProps } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { Pin } from "../pin";
 import { useEditProject } from "../../utils/project";
-import { ButttonNoPadding } from "../lib";
 
 interface ProjectList extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
-  setProjectModalOpen: (isOpen: boolean) => void;
+  projectButton: JSX.Element;
 }
 
 export const List: React.FC<ProjectList> = ({
@@ -77,16 +76,7 @@ export const List: React.FC<ProjectList> = ({
                 <Dropdown.Button
                   overlay={
                     <Menu>
-                      <Menu.Item key={"edit"}>
-                        <ButttonNoPadding
-                          onClick={() => {
-                            props.setProjectModalOpen(true);
-                          }}
-                          type={"link"}
-                        >
-                          编辑
-                        </ButttonNoPadding>
-                      </Menu.Item>
+                      <Menu.Item key={"edit"}>{props.projectButton}</Menu.Item>
                     </Menu>
                   }
                 ></Dropdown.Button>

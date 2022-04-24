@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import { useDebounce, useDocumentTitle } from "../../utils";
 import { List } from "./list";
-import { Typography, Button } from "antd";
+import { Typography } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { useProjectsSearchParams } from "./util";
@@ -32,9 +32,7 @@ export interface User {
   token: string;
 }
 
-export const ProjectListPage = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectListPage = (props: { projectButton: JSX.Element }) => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectsSearchParams();
@@ -49,9 +47,7 @@ export const ProjectListPage = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
@@ -62,7 +58,7 @@ export const ProjectListPage = (props: {
         loading={isLoading}
         dataSource={list || []}
         users={users || []}
-        setProjectModalOpen={props.setProjectModalOpen}
+        projectButton={props.projectButton}
       />
     </Container>
   );
