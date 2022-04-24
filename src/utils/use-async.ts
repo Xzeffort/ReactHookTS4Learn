@@ -1,5 +1,5 @@
 import { useMountedRef } from "./index";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface State<D> {
   error: Error | null;
@@ -31,48 +31,54 @@ export const useAsync = <D>(
 
   const mountRef = useMountedRef();
 
-  const setData = (data: D) =>
-    setState({
-      data,
-      stat: "success",
-      error: null,
-    });
+  const setData = useCallback(
+    (data: D) =>
+      setState({
+        data,
+        stat: "success",
+        error: null,
+      }),
+    []
+  );
 
-  const setError = (error: Error) =>
-    setState({
-      data: null,
-      stat: "error",
-      error: error,
-    });
+  const setError = useCallback(
+    (error: Error) =>
+      setState({
+        data: null,
+        stat: "error",
+        error: error,
+      }),
+    []
+  );
 
-  const run = (
-    promise: Promise<D>,
-    runConfig?: { retry: () => Promise<D> }
-  ) => {
-    if (!promise || !promise.then) {
-      throw new Error("请传入promise类型");
-    }
-    setState({ ...state, stat: "loading" });
-    setRetry(() => () => {
-      if (runConfig?.retry) {
-        run(runConfig?.retry(), runConfig);
+  const run = useCallback(
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+      if (!promise || !promise.then) {
+        throw new Error("请传入promise类型");
       }
-    });
-    return promise
-      .then((data) => {
-        if (mountRef.current) {
-          setData(data);
+      setState((prev) => ({ ...prev, stat: "loading" }));
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig?.retry(), runConfig);
         }
-        return data;
-      })
-      .catch((error) => {
-        setError(error);
-        if (config.throwOnError) {
-          return Promise.reject(error);
-        }
-        return error;
       });
-  };
+      return promise
+        .then((data) => {
+          if (mountRef.current) {
+            setData(data);
+          }
+          return data;
+        })
+        .catch((error) => {
+          setError(error);
+          if (config.throwOnError) {
+            return Promise.reject(error);
+          }
+          return error;
+        });
+    },
+    [config.throwOnError, mountRef, setData, setError]
+  );
 
   return {
     isIdle: state.stat === "idle",
